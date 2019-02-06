@@ -2,7 +2,6 @@ var net = require('net');
 var HOST = 'localhost';
 var PORT = 6969;
 var client = new net.Socket();
-var i = 0
 
 client.connect(PORT, HOST, function() 
 {
@@ -12,16 +11,22 @@ client.connect(PORT, HOST, function()
 
 client.on('data', function(data) 
 {
-	 console.log('DATA: '+ data);
-	 
-      var standard_input = process.stdin;
-      console.log("Please input number in command line."  + "#" + (i+1));
+	 console.log('server to send : '+ data);
+	 var stdin = process.stdin;
+   console.log("\n\nEnter input to send to server."+":");
      
-      standard_input.on('data', function (data) 
+   if(data=="AGAIN!")
+   {
+      stdin.on('data', function (data) 
       {
-        client.write(''+ data)
-        client.destroy()
+        client.write(''+data)
       });
+    }
+    else if(data=="END!")
+    {
+      client.write(''+data)
+      client.destroy()
+    }  
 });
 
 
